@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/Home';
 import CryptoDetail from './src/CryptoDetail';
 import Login from './src/Login';
+import SignUp from './src/SignUp';
 
 export default function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -13,9 +14,10 @@ export default function App(): React.JSX.Element {
       <Stack.Navigator
         initialRouteName="List"
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="SignUp" component={Login} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

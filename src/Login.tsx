@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import checkLogin from './helper/AsyncStorage';
+import SignUp from './SignUp';
+
 const styles = StyleSheet.create({
   button: {marginTop: 30},
   buttonText: {
@@ -53,6 +55,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 150,
     height: 150,
+  },
+  linkText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
 });
 
@@ -101,6 +107,11 @@ const Login = (): React.JSX.Element => {
             }}>
             <Text style={styles.buttonText}>Se connecter</Text>
           </TouchableOpacity>
+          <Text
+            style={styles.linkText}
+            onPress={() => navigation.navigate('SignUp')}>
+            Vous n'avez pas de compte? Inscrivez-vous ici.
+          </Text>
         </View>
       </ScrollView>
     </View>

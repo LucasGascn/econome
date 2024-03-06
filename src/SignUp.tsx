@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   button: {marginTop: 30},
@@ -64,6 +65,8 @@ const SignUp = (): React.JSX.Element => {
   const [email, setEmail] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const navigation = useNavigation();
+
   const passwordConfirmValid = useMemo(() => {
     return password === passwordConfirm;
   }, [password, passwordConfirm]);
@@ -72,16 +75,9 @@ const SignUp = (): React.JSX.Element => {
       var data = [name, lastName, email, password];
       const json = JSON.stringify(data);
       await AsyncStorage.setItem(email, json);
-      loadData();
+      navigation.navigate('Login');
     }
   }, [name, lastName, password, email, passwordConfirmValid]);
-  const loadData = async () => {
-    const json = await AsyncStorage.getItem(email);
-    if (!json) {
-      return;
-    }
-    return JSON.parse(json);
-  };
   return (
     <View style={styles.pageContainer}>
       <ScrollView>
