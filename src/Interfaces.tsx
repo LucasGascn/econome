@@ -24,11 +24,18 @@ export type CryptoDetailType = {
   btcPrice: string;
   priceAt: Int32;
   change: string;
-  rank: 1;
-  numberOfMarkets: 9800;
-  numberOfExchanges: 190;
+  rank: Int32;
+  numberOfMarkets: Int32;
+  numberOfExchanges: Int32;
   allTimeHigh: {
     price: string;
     timestamp: Int32;
+  };
+  supply: {
+    confirmed: boolean;
+    supplyAt: Int32;
+    circulating: string;
+    total: string;
+    max: string;
   };
 };
