@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
+  linkText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
 });
 
 const SignUp = (): React.JSX.Element => {
@@ -97,7 +101,6 @@ const SignUp = (): React.JSX.Element => {
                 setName(text);
               }}
             />
-
             <TextInput
               style={styles.inputs}
               value={lastName}
@@ -147,6 +150,11 @@ const SignUp = (): React.JSX.Element => {
             }}>
             {<Text style={styles.buttonText}>Envoyer</Text>}
           </TouchableOpacity>
+          <Text
+            style={styles.linkText}
+            onPress={() => navigation.navigate('Login')}>
+            Vous avez déjà un compte?
+          </Text>
         </View>
       </ScrollView>
     </View>

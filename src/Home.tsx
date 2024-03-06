@@ -5,6 +5,7 @@ import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import {url} from './api/helper';
 import {SearchBar} from '@rneui/themed';
 import Header from './Header';
+//import {verifConnected} from './helper/AsyncStorage';
 
 type Crypto = {
   id: string;
@@ -62,6 +63,7 @@ const Home = ({navigation}: any): React.JSX.Element => {
   }, []);
 
   useEffect(() => {
+    //verifConnected();
     getCryptos();
   }, []);
 

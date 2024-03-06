@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import checkLogin from './helper/AsyncStorage';
+import {checkLogin} from './helper/AsyncStorage';
 import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
