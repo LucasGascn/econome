@@ -50,7 +50,14 @@ const CryptoListItem = (props: {item: CryptoType}): React.JSX.Element => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {item} = props;
 
-  const roundedPrice = Math.round(parseFloat(item.price) * 100) / 100;
+  const price = parseFloat(item.price);
+  let roundedPrice;
+
+  if (Math.abs(price) < 0.001) {
+    roundedPrice = price.toExponential(2);
+  } else {
+    roundedPrice = (Math.round(price * 100) / 100).toFixed(2);
+  }
 
   return (
     <TouchableOpacity

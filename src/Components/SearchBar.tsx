@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     backgroundColor: '#251B3F',
 
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
@@ -18,16 +18,25 @@ const styles = StyleSheet.create({
     width: '90%',
     marginBottom: 5,
     paddingLeft: 20,
+    paddingRight: 15,
     paddingTop: 5,
     paddingBottom: 5,
 
     borderRadius: 35,
   },
 
-  searchBar: {},
+  textContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 
   text: {
     color: '#6B6386',
+  },
+
+  icon: {
+    marginRight: 5,
   },
 });
 
@@ -40,14 +49,22 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({setSearch, search, tooltip}) => {
   return (
     <View style={styles.searchBarContainer}>
-      <Icon name={'search'} color={'#806B9A'} />
-      <TextInput
-        style={styles.searchBar}
-        placeholder={tooltip}
-        onChangeText={text => {
-          setSearch(text);
+      <View style={styles.textContainer}>
+        <Icon style={styles.icon} name={'search'} color={'#806B9A'} />
+        <TextInput
+          placeholder={tooltip}
+          onChangeText={text => {
+            setSearch(text);
+          }}
+          value={search}
+        />
+      </View>
+      <Icon
+        name={'delete'}
+        color={'#806B9A'}
+        onPress={() => {
+          setSearch('');
         }}
-        value={search}
       />
     </View>
   );
