@@ -1,9 +1,11 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 
-import {reducer as cryptoReducers} from './reducers/cryptoReducers'
+import {reducer as cryptoReducer} from './reducers/cryptoReducer'
+import {reducer as accountReducer} from './reducers/accountReducer'
 
 const rootReducer = combineReducers({
-    crypto: cryptoReducers
+    crypto: cryptoReducer,
+    account: accountReducer
 })
 
 const store = configureStore({

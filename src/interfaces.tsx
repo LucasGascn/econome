@@ -10,3 +10,10 @@ export type CryptoDetail = {
   image: string;
   name: string;
 };
+
+export type AccountDetail = {
+  nom: string;
+  prenom: string;
+  email: string;
+  password: string;
+}

@@ -4,7 +4,7 @@ import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 //import {SearchBar} from '@rneui/themed';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
-import {actions as cryptoActions} from './stores/reducers/cryptoReducers.tsx'
+import {actions as cryptoActions} from './stores/reducers/cryptoReducer.tsx'
 import { Crypto } from './interfaces'
 import { SearchBar } from '@rneui/base';
 import axios from 'axios';
