@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {url} from './api/helper';
+import {CryptoDetailType} from './Interfaces';
+import {RootStackParamList} from '../App';
 import {Image, Text} from '@rneui/base';
-
-type CryptoDetail = {
-  current_price: Int32Array;
-  id: string;
-  image: string;
-  name: string;
-};
+import {url} from './api/helper';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -24,13 +20,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const CryptoDetail = ({route}: any): React.JSX.Element => {
-  const {id} = route.params;
-  const [cryptoDetail, setCryptoDetail] = useState<CryptoDetail>({});
+const CryptoDetail = (
+  props: NativeStackScreenProps<RootStackParamList, 'CryptoDetail'>,
+): React.JSX.Element => {
+  const {id}: {id: string} = props.route.params;
+  const [cryptoDetail, setCryptoDetail] = useState<CryptoDetailType>();
 
   const getCryptoDetail = useCallback(() => {
-    const requestUrl = url('coins/markets?vs_currency=usd&ids=' + id);
-    console.log(id + ' requested');
+    const requestUrl = url('coin/' + id);
     axios
       .get(requestUrl)
       .then(function (response) {
@@ -45,13 +42,17 @@ const CryptoDetail = ({route}: any): React.JSX.Element => {
     getCryptoDetail();
   }, []);
 
+  if (!cryptoDetail) {
+    return <View style={styles.pageContainer} />;
+  }
+
   return (
     <View style={styles.pageContainer}>
       <Text>{cryptoDetail.name}</Text>
-      <Text>{cryptoDetail.current_price} €</Text>
+      <Text>{cryptoDetail.price} €</Text>
 
-      {cryptoDetail.image && (
-        <Image style={styles.image} source={{uri: cryptoDetail.image}} />
+      {cryptoDetail.iconUrl && (
+        <Image style={styles.image} source={{uri: cryptoDetail.iconUrl}} />
       )}
     </View>
   );

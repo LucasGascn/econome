@@ -1,21 +1,53 @@
-import React from 'react';
+/* eslint-disable react/no-unstable-nested-components */
+import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import Login from './src/Login';
-import Home from './src/Home';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import CryptoDetail from './src/CryptoDetail';
+import Home from './src/Home';
+import {Icon} from '@rneui/base';
+
+export type RootStackParamList = {
+  MainStack: undefined;
+  Home: undefined;
+  CryptoDetail: {id: string};
+};
 
 export default function App(): React.JSX.Element {
-  const Stack = createNativeStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList>();
+  const Tab = createBottomTabNavigator<RootStackParamList>();
+
+  const MainStack = () => (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
+    </Stack.Navigator>
+  );
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="List"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={Home} />
-        <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
-      </Stack.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {backgroundColor: '#1B0B49', borderColor: '#1B0B49'},
+        }}>
+        <Tab.Screen
+          name="MainStack"
+          component={MainStack}
+          options={{
+            tabBarIcon: () => {
+              return <Icon name={'home'} color={'#EBE7F5'} />;
+            },
+            tabBarLabel: () => {
+              return null;
+            },
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
