@@ -1,7 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
-
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -10,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   button: {marginTop: 30},
@@ -58,32 +57,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = ({navigation}: any): React.JSX.Element => {
+const SignUp = (): React.JSX.Element => {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
-
   const passwordConfirmValid = useMemo(() => {
     return password === passwordConfirm;
   }, [password, passwordConfirm]);
 
-  const checkForm = useCallback(() => {
+  const checkForm = useCallback(async () => {
     if (name && lastName && password.length > 2 && passwordConfirmValid) {
-      Alert.alert(
-        'Inscription enregistrée',
-        `Bonjour, ${name} ${lastName}, votre mot de passe est : ${password}`,
-        [
-          {
-            text: 'Continuer',
-            onPress: () => navigation.navigate('List'),
-          },
-        ],
-      );
-    }
-  }, [name, lastName, password, passwordConfirmValid, navigation]);
+      var data = [name, lastName, email, password];
+      const json = JSON.stringify(data);
+      await AsyncStorage.setItem(email, json);
 
+      loadData();
+    }
+  }, [name, lastName, password, email, passwordConfirmValid]);
+  const loadData = async () => {
+    const json = await AsyncStorage.getItem(email);
+    console.log(await AsyncStorage.getItem(email));
+
+    if (!json) {
+      return;
+    }
+    return JSON.parse(json);
+  };
   return (
     <View style={styles.pageContainer}>
       <ScrollView>
@@ -103,6 +105,7 @@ const Login = ({navigation}: any): React.JSX.Element => {
                 setName(text);
               }}
             />
+
             <TextInput
               style={styles.inputs}
               value={lastName}
@@ -110,6 +113,15 @@ const Login = ({navigation}: any): React.JSX.Element => {
               placeholderTextColor={'black'}
               onChangeText={text => {
                 setLastName(text);
+              }}
+            />
+            <TextInput
+              style={styles.inputs}
+              value={email}
+              placeholder={'email'}
+              placeholderTextColor={'black'}
+              onChangeText={text => {
+                setEmail(text);
               }}
             />
             <TextInput
@@ -149,4 +161,4 @@ const Login = ({navigation}: any): React.JSX.Element => {
   );
 };
 
-export default Login;
+export default SignUp;
