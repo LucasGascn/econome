@@ -3,3 +3,10 @@ export type Crypto = {
   name: string;
   symbol: string;
 };
+
+export type CryptoDetail = {
+  current_price: Int32Array;
+  id: string;
+  image: string;
+  name: string;
+};

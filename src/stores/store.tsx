@@ -1,19 +1,13 @@
-import {createSlice} from '@reduxjs/toolkit';
-import { Crypto } from "../interfaces.tsx";
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 
-const slice = createSlice({
-    name: 'cryptos',
-    initialState: {
-        cryptos: Array<Crypto>,
-        boughtCryptos: Array<Crypto>
-    },
-    reducers: {
-        set: (state, action) => {
-            state.cryptos = action.payload
-        },
-    }
+import {reducer as cryptoReducers} from './reducers/cryptoReducers'
+
+const rootReducer = combineReducers({
+    crypto: cryptoReducers
 })
 
-const {reducer, actions} = slice;
+const store = configureStore({
+    reducer: rootReducer
+})
 
-export {reducer, actions};
+export {store};
