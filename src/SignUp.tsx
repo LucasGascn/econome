@@ -67,20 +67,16 @@ const SignUp = (): React.JSX.Element => {
   const passwordConfirmValid = useMemo(() => {
     return password === passwordConfirm;
   }, [password, passwordConfirm]);
-
   const checkForm = useCallback(async () => {
     if (name && lastName && password.length > 2 && passwordConfirmValid) {
       var data = [name, lastName, email, password];
       const json = JSON.stringify(data);
       await AsyncStorage.setItem(email, json);
-
       loadData();
     }
   }, [name, lastName, password, email, passwordConfirmValid]);
   const loadData = async () => {
     const json = await AsyncStorage.getItem(email);
-    console.log(await AsyncStorage.getItem(email));
-
     if (!json) {
       return;
     }
