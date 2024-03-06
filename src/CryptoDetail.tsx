@@ -3,14 +3,8 @@ import axios from 'axios';
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {url} from './api/helper';
+import { CryptoDetail, Crypto } from "./interfaces.tsx";
 import {Image, Text} from '@rneui/base';
-
-type CryptoDetail = {
-  current_price: Int32Array;
-  id: string;
-  image: string;
-  name: string;
-};
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -24,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CryptoDetail = ({route}: any): React.JSX.Element => {
+const CryptoDetailPage = ({route}: any): React.JSX.Element => {
   const {id} = route.params;
   const [cryptoDetail, setCryptoDetail] = useState<CryptoDetail>({});
 
@@ -48,6 +42,7 @@ const CryptoDetail = ({route}: any): React.JSX.Element => {
   return (
     <View style={styles.pageContainer}>
       <Text>{cryptoDetail.name}</Text>
+      <Text>{cryptoDetail.name}</Text>
       <Text>{cryptoDetail.current_price} €</Text>
 
       {cryptoDetail.image && (
@@ -57,4 +52,4 @@ const CryptoDetail = ({route}: any): React.JSX.Element => {
   );
 };
 
-export default CryptoDetail;
+export default CryptoDetailPage;

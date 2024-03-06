@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
-import {url} from './api/helper';
-import {SearchBar} from '@rneui/themed';
+//import {SearchBar} from '@rneui/themed';
 import Header from './Header';
-
-type Crypto = {
-  id: string;
-  name: string;
-  symbol: string;
-};
+import { useDispatch, useSelector } from 'react-redux';
+import {actions as cryptoActions} from './stores/reducers/cryptoReducer.tsx'
+import { Crypto } from './interfaces'
+import { SearchBar } from '@rneui/base';
+import axios from 'axios';
+import {url} from './api/helper.js';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -41,29 +39,27 @@ const styles = StyleSheet.create({
 });
 
 const Home = ({navigation}: any): React.JSX.Element => {
-  const [cryptos, setCryptos] = useState<Crypto[]>([]);
-
+  const {cryptosList} = useSelector((s: any) => s.crypto)
   const [search, setSearch] = useState('');
 
-  const searchedCryptos = useMemo<Crypto[]>(() => {
-    return cryptos.filter(crypto => crypto.name.includes(search));
-  }, [cryptos, search]);
-
-  const getCryptos = useCallback(() => {
-    const requestUrl = url('coins/list?include_platform=false');
-    axios
-      .get(requestUrl)
-      .then(function (response) {
-        setCryptos(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getCryptos();
+    const requestUrl = url('coins/list?include_platform=false');
+    axios
+    .get(requestUrl)
+    .then(function (response) {
+        dispatch(cryptoActions.setCryptosList(response.data))
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
   }, []);
+
+  const searchedCryptosList = useMemo(() => {
+
+      return cryptosList.filter((crypto: Crypto) => crypto.name.includes(search))
+  }, [cryptosList, search]);
 
   return (
     <View style={styles.pageContainer}>
@@ -79,7 +75,7 @@ const Home = ({navigation}: any): React.JSX.Element => {
         />
       </View>
       <FlatList
-        data={searchedCryptos}
+        data={searchedCryptosList}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
