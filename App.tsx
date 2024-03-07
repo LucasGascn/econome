@@ -5,6 +5,7 @@ import { Crypto } from "./src/interfaces.tsx";
 // import Login from './src/Login';
 import Home from './src/Home';
 import CryptoDetail from './src/CryptoDetail';
+import Wallet from './src/Wallet'
 import { Provider } from 'react-redux';
 import {store} from './src/stores/store.tsx'
 
@@ -19,6 +20,7 @@ export default function App(): React.JSX.Element {
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={Home} />
           <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
+          <Stack.Screen name="Wallet" component={Wallet} />
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>

@@ -2,13 +2,56 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 //import {SearchBar} from '@rneui/themed';
-import Header from './Header';
+import Header from './Header.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {actions as cryptoActions} from './stores/reducers/cryptoReducer.tsx'
-import { Crypto } from './interfaces'
+import { Crypto } from './interfaces.tsx'
 import { SearchBar } from '@rneui/base';
 import axios from 'axios';
 import {url} from './api/helper.js';
+
+const Wallet = ({navigation}: any): React.JSX.Element => {
+  const {loggedInUser} = useSelector((s: any) => s.account)
+  const {boughtCryptos} = useSelector((s: any) => s.crypto)
+  const [search, setSearch] = useState('');
+
+  const dispatch = useDispatch();
+
+  const searchedCryptosList = useMemo(() => {
+
+      return boughtCryptos.filter((crypto: Crypto) => crypto.name.includes(search))
+  }, [boughtCryptos, search]);
+
+  return (
+    <View style={styles.pageContainer}>
+      <Header />
+
+      <View style={styles.searchBar}>
+        <SearchBar
+          placeholder="Rechercher cryptos"
+          onChangeText={text => {
+            setSearch(text);
+          }}
+          value={search}
+        />
+      </View>
+      <FlatList
+        data={searchedCryptosList}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              style={styles.tile}
+              onPress={() => {
+                navigation.navigate('CryptoDetail', {id: item.id});
+              }}>
+              {<Text style={styles.text}>{item.name}</Text>}
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -38,64 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const Home = ({navigation}: any): React.JSX.Element => {
-  const {cryptosList} = useSelector((s: any) => s.crypto)
-  const [search, setSearch] = useState('');
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const requestUrl = url('coins/list?include_platform=false');
-    axios
-    .get(requestUrl)
-    .then(function (response) {
-        dispatch(cryptoActions.setCryptosList(response.data))
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-  }, []);
-
-  const searchedCryptosList = useMemo(() => {
-
-      return cryptosList.filter((crypto: Crypto) => crypto.name.includes(search))
-  }, [cryptosList, search]);
-
-  return (
-    <View style={styles.pageContainer}>
-      <Header />
-
-      <View style={styles.searchBar}>
-        <SearchBar
-          placeholder="Rechercher cryptos"
-          onChangeText={text => {
-            setSearch(text);
-          }}
-          value={search}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Wallet');
-          }}>
-          <Text>Ouvrir wallet</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        data={searchedCryptosList}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              style={styles.tile}
-              onPress={() => {
-                navigation.navigate('CryptoDetail', {id: item.id});
-              }}>
-              {<Text style={styles.text}>{item.name}</Text>}
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
-  );
-};
-
-export default Home;
+export default Wallet;

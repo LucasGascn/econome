@@ -3,18 +3,28 @@ import { Crypto, CryptoDetail } from "../../interfaces.tsx";
 import {url} from '../../api/helper.js';
 import axios from 'axios';
 
+type InitialState = {
+    cryptosList: Crypto[],
+    boughtCryptos: CryptoDetail[]
+}
+
+const initialState: InitialState = {
+    cryptosList: [],
+    boughtCryptos: []
+}
+
 const slice = createSlice({
     name: 'cryptos',
-    initialState: {
-        cryptosList: [],
-        boughtCryptos: []
-    },
+    initialState,
     reducers: {
         setCryptosList: (state, action) => {
             state.cryptosList = action.payload;
         },
         addBoughtCrypto: (state, action) => {
-            state.boughtCryptos = action.payload
+            state.boughtCryptos = [...state.boughtCryptos, action.payload]
+        },
+        sellBoughtCrypto: (state, action) => {
+            state.boughtCryptos = state.boughtCryptos.filter((crypto: CryptoDetail) => crypto.id !== action.payload);
         }
     },
 })
