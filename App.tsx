@@ -14,7 +14,7 @@ export default function App(): React.JSX.Element {
       <Stack.Navigator
         initialRouteName="List"
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SignUp" component={SignUp} />

@@ -16,10 +16,10 @@ export async function checkLogin(
   }
 }
 
-/*export async function verifConnected() {
-  const navigation = useNavigation();
+export async function verifConnected(navigation: any) {
   const json = await AsyncStorage.getItem('connected');
-  if (json === 'false') {
+  console.log(json);
+  if (json !== 'true') {
     navigation.navigate('Login');
   }
-}*/
+}
