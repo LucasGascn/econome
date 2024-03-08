@@ -149,7 +149,7 @@ const CryptoDetail = (
                         ? styles.negative
                         : styles.positive,
                     ]}>
-                    {roundPrice(cryptoDetail.change || '')} $
+                    {roundPrice(cryptoDetail.change || '')} %
                   </Text>
                   <Text style={styles.textWhite}>
                     {'\n'}

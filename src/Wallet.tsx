@@ -33,7 +33,7 @@ const Wallet = (): React.JSX.Element => {
             iconUrl: cryptoData.iconUrl,
             price: filtredByAmount
               ? cryptoDetail.amount.toString()
-              : cryptoData.price,
+              : (parseFloat(cryptoData.price) * cryptoDetail.amount).toString(),
             change: cryptoData.change,
             rank: cryptoData.rank,
             btcPrice: cryptoData.btcPrice,
