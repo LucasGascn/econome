@@ -18,7 +18,6 @@ export default function App(): React.JSX.Element {
 
   getConnected().then(res => {
     setIsLoggedIn(res === 'true');
-    console.log('isLoggedIn : ' + isLoggedIn);
   });
 
   return (

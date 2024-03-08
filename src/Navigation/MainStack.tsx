@@ -16,7 +16,6 @@ export default function MainStack(): React.JSX.Element {
 
   getConnected().then(res => {
     setIsLoggedIn(res === 'true');
-    console.log('isLoggedIn : ' + isLoggedIn);
   });
 
   if (isLoggedIn) {
