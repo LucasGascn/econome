@@ -65,7 +65,6 @@ const CryptoListItem: React.FC<CryptoListItemProps> = ({
   } else {
     roundedPrice = (Math.round(price * 100) / 100).toFixed(2);
   }
-
   return (
     <TouchableOpacity
       style={styles.tile}
