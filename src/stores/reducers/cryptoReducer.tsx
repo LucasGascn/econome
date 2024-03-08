@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { Crypto, CryptoDetail } from "../../interfaces.tsx";
-import {url} from '../../api/helper.js';
+import {Crypto, CryptoDetail} from '../../Utils/Interfaces.js';
+import {url} from '../../Utils/helper.js';
 import axios from 'axios';
 
 type InitialState = {
@@ -27,7 +27,8 @@ const slice = createSlice({
             state.boughtCryptos = state.boughtCryptos.filter((crypto: CryptoDetail) => crypto.id !== action.payload);
         }
     },
-})
+  },
+});
 
 const {reducer, actions} = slice;
 
