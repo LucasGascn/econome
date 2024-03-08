@@ -3,11 +3,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from '../Utils/Interfaces';
 import CryptoDetail from '../Components/Crypto/CryptoDetail';
 import MainTab from './MainTab';
+import {getConnected} from '../Utils/AsyncStorage';
+import {useState} from 'react';
+import Home from '../Home';
+import Wallet from '../Wallet';
+import SignUp from '../SignUp';
+import Login from '../Login';
 
 export default function MainStack(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
-
-<<<<<<< HEAD
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   getConnected().then(res => {
@@ -36,7 +40,6 @@ export default function MainStack(): React.JSX.Element {
       </Stack.Navigator>
     );
   }
-=======
   return (
     <Stack.Navigator
       screenOptions={{
@@ -47,5 +50,4 @@ export default function MainStack(): React.JSX.Element {
       <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
     </Stack.Navigator>
   );
->>>>>>> refs/remotes/origin/main
 }
