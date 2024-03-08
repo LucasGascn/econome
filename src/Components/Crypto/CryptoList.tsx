@@ -7,6 +7,8 @@ import SearchBar from '../SearchBar';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCryptos} from '../../Stores/reducers/CryptoReducer';
 import {StoreDispatch, RootState} from '../../Stores/Store';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../App';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -21,6 +23,8 @@ const styles = StyleSheet.create({
 });
 
 const CryptoList = (): React.JSX.Element => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   const dispatch = useDispatch<StoreDispatch>();
 
   useEffect(() => {
@@ -50,7 +54,7 @@ const CryptoList = (): React.JSX.Element => {
       <FlatList
         data={searchedCryptos}
         renderItem={({item}) => {
-          return <CryptoListItem item={item} />;
+          return <CryptoListItem item={item} navigation={navigation} />;
         }}
       />
     </View>

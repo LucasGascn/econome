@@ -30,6 +30,7 @@ export default function App(): React.JSX.Element {
       }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
+      <Stack.Screen name="Wallet" component={Wallet} />
     </Stack.Navigator>
   );
 
