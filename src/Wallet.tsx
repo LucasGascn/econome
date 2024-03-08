@@ -5,10 +5,9 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from './Stores/Store';
 import CryptoListItem from './Components/Crypto/CryptoListItem';
-import {CryptoType} from './Utils/Interfaces';
+import {CryptoType, RootStackParamList} from './Utils/Interfaces';
 import {Icon, Switch} from '@rneui/themed';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../App';
 
 const Wallet = (): React.JSX.Element => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

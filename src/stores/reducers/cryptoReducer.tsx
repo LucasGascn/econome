@@ -3,8 +3,10 @@ import {CryptoType} from '../../Utils/Interfaces';
 import {url} from '../../Utils/Helper';
 
 import axios from 'axios';
+import {getWallet, setWallet} from '../../Utils/AsyncStorage';
+import {StoreDispatch} from '../Store';
 
-interface CryptoWallet {
+export interface CryptoWallet {
   [uuid: string]: {
     amount: number;
     symbol: string;
@@ -27,6 +29,15 @@ export const getCryptos = createAsyncThunk('account/getCryptos', async () => {
   const response = await axios.get(url('coins'));
   return response.data.data.coins;
 });
+export const loadWallet = async (email: string, dispatch: StoreDispatch) => {
+  const JsonWallet = await getWallet(email);
+  if (JsonWallet) {
+    const wallet = JSON.parse(JsonWallet);
+    dispatch(actions.loadWalletData(wallet));
+  } else {
+    return {};
+  }
+};
 
 const slice = createSlice({
   name: 'account',
@@ -35,19 +46,26 @@ const slice = createSlice({
     buyOrSellCrypto: (
       state,
       action: PayloadAction<{
+        email: string;
         uuid: string;
         symbol: string;
         amount: number;
         usd: number;
       }>,
     ) => {
-      const {uuid, symbol, amount, usd} = action.payload;
+      const {email, uuid, symbol, amount, usd} = action.payload;
       state.money += usd;
       if (state.cryptoWallet[uuid]) {
         state.cryptoWallet[uuid].amount += amount;
       } else {
         state.cryptoWallet[uuid] = {symbol: symbol, amount: amount};
       }
+
+      setWallet(email, state.cryptoWallet);
+    },
+
+    loadWalletData: (state, action) => {
+      state.cryptoWallet = action.payload;
     },
   },
   extraReducers: builder => {

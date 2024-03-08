@@ -7,36 +7,6 @@ import MainTab from './MainTab';
 export default function MainStack(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
 
-<<<<<<< HEAD
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  getConnected().then(res => {
-    setIsLoggedIn(res === 'true');
-  });
-
-  if (isLoggedIn) {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
-        <Stack.Screen name="Wallet" component={Wallet} />
-      </Stack.Navigator>
-    );
-  } else {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Login" component={Login} />
-      </Stack.Navigator>
-    );
-  }
-=======
   return (
     <Stack.Navigator
       screenOptions={{
@@ -47,5 +17,4 @@ export default function MainStack(): React.JSX.Element {
       <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
     </Stack.Navigator>
   );
->>>>>>> refs/remotes/origin/main
 }

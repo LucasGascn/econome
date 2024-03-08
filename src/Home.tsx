@@ -5,7 +5,6 @@ import {View} from 'react-native';
 import Wallet from './Components/WalletAnimation';
 
 const Home = (): React.JSX.Element => {
-  console.log('home');
   return (
     <PageContainer
       child={
