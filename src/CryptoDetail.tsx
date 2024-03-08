@@ -35,6 +35,7 @@ const CryptoDetail = (
 ): React.JSX.Element => {
   const [cryptoDetail, setCryptoDetail] = useState<CryptoDetailType>();
 
+
   const getCryptoDetail = useCallback(() => {
     const requestUrl = url('coin/' + id);
     axios

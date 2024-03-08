@@ -41,6 +41,7 @@ target 'econome' do
 
   target 'economeTests' do
     inherit! :complete
+    pod 'CocoaAsyncSocket'
     # Pods for testing
   end
 

@@ -14,6 +14,9 @@ export type RootStackParamList = {
   CryptoDetail: {id: string};
 };
 
+import { Provider } from 'react-redux';
+import {store} from './src/stores/store.tsx'
+
 export default function App(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
   const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -30,6 +33,8 @@ export default function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
+              <Provider store={store}>
+
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -48,6 +53,8 @@ export default function App(): React.JSX.Element {
           }}
         />
       </Tab.Navigator>
+              </Provider>
+
     </NavigationContainer>
   );
 }
