@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import CryptoDetail from './src/Components/Crypto/CryptoDetail';
 import Home from './src/Home';
+import Wallet from './src/Wallet'
 import {Icon} from '@rneui/base';
 
 export type RootStackParamList = {

@@ -16,6 +16,7 @@ const Home = (): React.JSX.Element => {
         </View>
       }
     />
+
   );
 };
 
