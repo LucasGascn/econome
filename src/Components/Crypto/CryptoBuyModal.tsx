@@ -65,6 +65,17 @@ const CryptoBuyModal: React.FunctionComponent<CryptoBuyModalProps> = props => {
       } else {
         console.log('Insufficient funds');
       }
+    } else {
+      if (wallet[uuid].amount >= parseFloat(input)) {
+        dispatch(
+          actions.buyOrSellCrypto({
+            uuid: uuid,
+            symbol: symbol,
+            amount: -parseFloat(input),
+            usd: output,
+          }),
+        );
+      }
     }
   };
 

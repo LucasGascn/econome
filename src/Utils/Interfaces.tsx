@@ -45,6 +45,7 @@ export type AccountDetail = {
 };
 
 export type RootStackParamList = {
+  MainTab: undefined;
   MainStack: undefined;
   Login: undefined;
   SignUp: undefined;

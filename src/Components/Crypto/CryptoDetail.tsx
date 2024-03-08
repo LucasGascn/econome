@@ -44,7 +44,7 @@ const CryptoDetail = (
   const [cryptoDetail, setCryptoDetail] = useState<CryptoDetailType>();
   const [buying, setBuying] = useState(false);
 
-  const {id}: {id: string} = props.route.params;
+  const {id}: {id: string} = props.route.params || '';
 
   const rotateX = useSharedValue(0);
   const rotateY = useSharedValue(0);
@@ -91,7 +91,7 @@ const CryptoDetail = (
     return {
       transform: [
         {
-          perspective: 1500,
+          perspective: 100000,
         },
         {rotateX: rotateXvalue},
         {rotateY: rotateYvalue},
