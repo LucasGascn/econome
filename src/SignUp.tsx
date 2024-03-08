@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -8,9 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {checkLogin} from './helper/AsyncStorage';
-import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
   button: {marginTop: 30},
@@ -18,12 +17,13 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   inputsContainer: {
+    height: 400,
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    marginTop: 20,
   },
   inputs: {
-    marginTop: 20,
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
-  loginContainer: {
+  inscriptionContainer: {
     alignItems: 'center',
     paddingTop: 20,
     height: '100%',
   },
 
-  loginText: {
+  inscriptionText: {
     fontSize: 40,
     fontWeight: 'bold',
     color: 'black',
@@ -62,16 +62,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = (): React.JSX.Element => {
-  const [email, setEmail] = useState('');
+const SignUp = (): React.JSX.Element => {
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const navigation = useNavigation();
+
+  const passwordConfirmValid = useMemo(() => {
+    return password === passwordConfirm;
+  }, [password, passwordConfirm]);
+  const checkForm = useCallback(async () => {
+    if (name && lastName && password.length > 2 && passwordConfirmValid) {
+      var data = [name, lastName, email, password];
+      const json = JSON.stringify(data);
+      await AsyncStorage.setItem(email, json);
+      navigation.navigate('Login');
+    }
+  }, [name, lastName, password, email, passwordConfirmValid]);
   return (
     <View style={styles.pageContainer}>
       <ScrollView>
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Connexion</Text>
+        <View style={styles.inscriptionContainer}>
+          <Text style={styles.inscriptionText}>Inscription</Text>
           <Image
             style={styles.avatar}
             source={require('../assets/batman.webp')}
@@ -79,8 +94,26 @@ const Login = (): React.JSX.Element => {
           <View style={styles.inputsContainer}>
             <TextInput
               style={styles.inputs}
+              value={name}
+              placeholder={'Prénom'}
+              placeholderTextColor={'black'}
+              onChangeText={text => {
+                setName(text);
+              }}
+            />
+            <TextInput
+              style={styles.inputs}
+              value={lastName}
+              placeholder={'Nom'}
+              placeholderTextColor={'black'}
+              onChangeText={text => {
+                setLastName(text);
+              }}
+            />
+            <TextInput
+              style={styles.inputs}
               value={email}
-              placeholder={'Email'}
+              placeholder={'email'}
               placeholderTextColor={'black'}
               onChangeText={text => {
                 setEmail(text);
@@ -99,18 +132,28 @@ const Login = (): React.JSX.Element => {
                 setPasswordIsValid(password.length > 3);
               }}
             />
+            <TextInput
+              style={[styles.inputs, !passwordConfirmValid && styles.invalid]}
+              value={passwordConfirm}
+              placeholder={'Confirmation Mot de passe'}
+              placeholderTextColor={'black'}
+              secureTextEntry
+              onChangeText={text => {
+                setPasswordConfirm(text);
+              }}
+            />
           </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              checkLogin(email, password, navigation);
+              checkForm();
             }}>
-            <Text style={styles.buttonText}>Se connecter</Text>
+            {<Text style={styles.buttonText}>Envoyer</Text>}
           </TouchableOpacity>
           <Text
             style={styles.linkText}
-            onPress={() => navigation.navigate('SignUp')}>
-            Vous n'avez pas de compte? Inscrivez-vous ici.
+            onPress={() => navigation.navigate('Login')}>
+            Vous avez déjà un compte?
           </Text>
         </View>
       </ScrollView>
@@ -118,4 +161,4 @@ const Login = (): React.JSX.Element => {
   );
 };
 
-export default Login;
+export default SignUp;

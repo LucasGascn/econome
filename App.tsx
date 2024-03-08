@@ -1,6 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import Login from './src/Login';
+import SignUp from './src/SignUp';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Icon} from '@rneui/base';
 import {Provider} from 'react-redux';
