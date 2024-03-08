@@ -58,6 +58,7 @@ const CryptoDetail = (
     };
   }, []);
 
+
   const getCryptoDetail = useCallback(() => {
     const requestUrl = url('coin/' + id);
     axios
