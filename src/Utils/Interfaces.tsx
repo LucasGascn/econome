@@ -43,3 +43,10 @@ export type AccountDetail = {
   email: string;
   password: string;
 };
+
+export type RootStackParamList = {
+  MainStack: undefined;
+  Home: undefined;
+  Wallet: undefined;
+  CryptoDetail: {id: string};
+};

@@ -1,38 +1,16 @@
 /* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import CryptoDetail from './src/Components/Crypto/CryptoDetail';
-import Home from './src/Home';
 import {Icon} from '@rneui/base';
-
-export type RootStackParamList = {
-  MainStack: undefined;
-  Home: undefined;
-  Wallet: undefined;
-  CryptoDetail: {id: string};
-};
-
 import {Provider} from 'react-redux';
 import store from './src/Stores/Store';
 import Wallet from './src/Wallet';
+import {RootStackParamList} from './src/Utils/Interfaces';
+import MainStack from './src/Navigation/MainStack';
 
 export default function App(): React.JSX.Element {
-  const Stack = createStackNavigator<RootStackParamList>();
   const Tab = createBottomTabNavigator<RootStackParamList>();
-
-  const MainStack = () => (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
-      <Stack.Screen name="Wallet" component={Wallet} />
-    </Stack.Navigator>
-  );
 
   return (
     <NavigationContainer>
