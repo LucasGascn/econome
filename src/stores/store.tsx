@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import {reducer as cryptoReducer} from './reducers/CryptoReducer';
-import {reducer as accountReducer} from './reducers/AccountReducer';
+import {reducer as cryptoReducer} from './Reducers/CryptoReducer';
+import {reducer as accountReducer} from './Reducers/AccountReducer';
 
 const rootReducer = combineReducers({
   crypto: cryptoReducer,

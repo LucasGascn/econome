@@ -23,7 +23,7 @@ import {
 } from 'react-native-sensors';
 import {useSelector} from 'react-redux';
 import {RootState} from '../Stores/Store';
-import {calculatePercentageIncrease, roundNumber} from '../Utils/helper';
+import {calculatePercentageIncrease, roundNumber} from '../Utils/Helper';
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 const HEIGHT = SCREEN_HEIGHT * 0.2;

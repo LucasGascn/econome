@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import {RootState} from '../../Stores/Store';
 import {useDispatch, useSelector} from 'react-redux';
-import {actions} from '../../Stores/reducers/CryptoReducer';
-import {roundNumber} from '../../Utils/helper';
+import {actions} from '../../Stores/Reducers/CryptoReducer';
+import {roundNumber} from '../../Utils/Helper';
 
 type CryptoBuyModalProps = {
   uuid: string;

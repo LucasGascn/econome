@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {url} from '../../Utils/helper';
 import {CryptoType} from '../../Utils/Interfaces';
+import {url} from '../../Utils/Helper';
 
 interface CryptoWallet {
   [uuid: string]: {

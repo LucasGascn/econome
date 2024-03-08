@@ -5,7 +5,7 @@ import CryptoListItem from './CryptoListItem';
 import {CryptoType} from '../../Utils/Interfaces';
 import SearchBar from '../SearchBar';
 import {useDispatch, useSelector} from 'react-redux';
-import {getCryptos} from '../../Stores/reducers/CryptoReducer';
+import {getCryptos} from '../../Stores/Reducers/CryptoReducer';
 import {StoreDispatch, RootState} from '../../Stores/Store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../App';

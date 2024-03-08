@@ -46,6 +46,8 @@ export type AccountDetail = {
 
 export type RootStackParamList = {
   MainStack: undefined;
+  Login: undefined;
+  SignUp: undefined;
   Home: undefined;
   Wallet: undefined;
   CryptoDetail: {id: string};

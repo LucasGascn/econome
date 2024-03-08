@@ -1,6 +1,6 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,14 +8,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {checkLogin} from './helper/AsyncStorage';
-import SignUp from './SignUp';
+import {NavigationProp} from '@react-navigation/native';
+import {checkLogin} from './Utils/AsyncStorage';
+import {RootStackParamList} from './Utils/Interfaces';
 
 const styles = StyleSheet.create({
-  button: {marginTop: 30},
+  button: {
+    marginTop: 30,
+    marginBottom: 15,
+    borderRadius: 15,
+    padding: 15,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
   buttonText: {
-    color: 'black',
+    color: 'white',
   },
   inputsContainer: {
     justifyContent: 'space-between',
@@ -24,31 +30,32 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginTop: 20,
-    borderColor: 'black',
+    borderColor: 'white',
     borderWidth: 1,
     borderRadius: 5,
     width: '80%',
     padding: 5,
     height: 60,
-    color: 'black',
+    color: 'white',
   },
   invalid: {
     borderColor: 'red',
   },
   pageContainer: {
-    backgroundColor: 'white',
     flex: 1,
   },
   loginContainer: {
     alignItems: 'center',
     paddingTop: 20,
-    height: '100%',
+
+    height: '55%',
+    width: '60%',
   },
 
   loginText: {
     fontSize: 40,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
   },
 
   avatar: {
@@ -57,63 +64,81 @@ const styles = StyleSheet.create({
     height: 150,
   },
   linkText: {
-    color: 'blue',
+    color: '#599ff0',
     textDecorationLine: 'underline',
+    borderRadius: 15,
+
+    padding: 10,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+  image: {
+    flex: 1,
+  },
+
+  scrollView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
-const Login = (): React.JSX.Element => {
+interface LoginProps {
+  navigation: NavigationProp<RootStackParamList>;
+}
+
+const Login: React.FC<LoginProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
-  const navigation = useNavigation();
+
   return (
     <View style={styles.pageContainer}>
-      <ScrollView>
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Connexion</Text>
-          <Image
-            style={styles.avatar}
-            source={require('../assets/batman.webp')}
-          />
-          <View style={styles.inputsContainer}>
-            <TextInput
-              style={styles.inputs}
-              value={email}
-              placeholder={'Email'}
-              placeholderTextColor={'black'}
-              onChangeText={text => {
-                setEmail(text);
-              }}
-            />
-            <TextInput
-              style={[styles.inputs, !passwordIsValid && styles.invalid]}
-              value={password}
-              placeholder={'Mot de passe'}
-              placeholderTextColor={'black'}
-              secureTextEntry
-              onChangeText={text => {
-                setPassword(text);
-              }}
-              onEndEditing={() => {
-                setPasswordIsValid(password.length > 3);
-              }}
-            />
+      <ImageBackground
+        source={require('./Assets/login.jpeg')}
+        resizeMode="cover"
+        style={styles.image}>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Login</Text>
+            <View style={styles.inputsContainer}>
+              <TextInput
+                style={styles.inputs}
+                value={email}
+                placeholder={'Email'}
+                placeholderTextColor={'white'}
+                onChangeText={text => {
+                  setEmail(text);
+                }}
+              />
+              <TextInput
+                style={[styles.inputs, !passwordIsValid && styles.invalid]}
+                value={password}
+                placeholder={'Mot de passe'}
+                placeholderTextColor={'white'}
+                secureTextEntry
+                onChangeText={text => {
+                  setPassword(text);
+                }}
+                onEndEditing={() => {
+                  setPasswordIsValid(password.length > 3);
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                checkLogin(email, password, navigation);
+              }}>
+              <Text style={styles.buttonText}>Connect</Text>
+            </TouchableOpacity>
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate('SignUp')}>
+              Sign up
+            </Text>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              checkLogin(email, password, navigation);
-            }}>
-            <Text style={styles.buttonText}>Se connecter</Text>
-          </TouchableOpacity>
-          <Text
-            style={styles.linkText}
-            onPress={() => navigation.navigate('SignUp')}>
-            Vous n'avez pas de compte? Inscrivez-vous ici.
-          </Text>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };

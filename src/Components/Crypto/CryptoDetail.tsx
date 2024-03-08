@@ -25,7 +25,7 @@ import Animated, {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../App';
 import {CryptoDetailType} from '../../Utils/Interfaces';
-import {url} from '../../Utils/helper';
+import {url} from '../../Utils/Helper';
 import axios from 'axios';
 import PageContainer from '../../Layout/PageContainer';
 import {SvgUri} from 'react-native-svg';

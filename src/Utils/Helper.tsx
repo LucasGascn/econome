@@ -1,4 +1,4 @@
-export function url(request, key = true) {
+export function url(request: string, key = true) {
   if (key) {
     const apiKey = process.env.API_KEY;
     //  const apiKey = "&x_cg_demo_api_key=CG-PRyvFoARJicJ7tL2qacTfMzV" //process.env.API_KEY;
@@ -13,7 +13,7 @@ export function url(request, key = true) {
   }
 }
 
-export function roundNumber(num) {
+export function roundNumber(num: number) {
   let roundedNum;
 
   if (Math.abs(num) < 0.001) {
@@ -25,7 +25,10 @@ export function roundNumber(num) {
   return roundedNum;
 }
 
-export function calculatePercentageIncrease(oldValue, newValue) {
+export function calculatePercentageIncrease(
+  oldValue: number,
+  newValue: number,
+) {
   let percentageIncrease = ((newValue - oldValue) / oldValue) * 100;
 
   return percentageIncrease;

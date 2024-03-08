@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
 
 export async function checkLogin(
   email: string,
@@ -16,9 +15,13 @@ export async function checkLogin(
   }
 }
 
+export async function getConnected() {
+  const json = await AsyncStorage.getItem('connected');
+  return json;
+}
+
 export async function verifConnected(navigation: any) {
   const json = await AsyncStorage.getItem('connected');
-  console.log(json);
   if (json !== 'true') {
     navigation.navigate('Login');
   }
