@@ -21,7 +21,13 @@ const slice = createSlice({
     },
     increaseWalletAmount: (state, action) => {
       state.wallet += action.payload;
-    },
+    },        
+    // getAccountDataFromStorage: (state) => {
+    //     state.loggedInUser.nom = ...;
+    //     state.loggedInUser.prenom = ...;
+    //     state.loggedInUser.email = ...;
+    //     state.loggedInUser.password = ...;
+    // } 
   },
 });
 

@@ -53,6 +53,13 @@ export default function App(): React.JSX.Element {
             }}
           />
         </Tab.Navigator>
+        <Stack.Navigator
+          initialRouteName="Wallet"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Login" component={Home} />
+          <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
+          <Stack.Screen name="Wallet" component={Wallet} />
+        </Stack.Navigator>
       </Provider>
     </NavigationContainer>
   );

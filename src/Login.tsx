@@ -88,7 +88,7 @@ const Login = ({navigation}: any): React.JSX.Element => {
     <View style={styles.pageContainer}>
       <ScrollView>
         <View style={styles.inscriptionContainer}>
-          <Text style={styles.inscriptionText}>Inscription</Text>
+          <Text style={styles.inscriptionText}>Inscriptionnn</Text>
           <Image
             style={styles.avatar}
             source={require('../assets/batman.webp')}
