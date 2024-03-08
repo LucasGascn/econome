@@ -11,6 +11,7 @@ import {
 import {NavigationProp} from '@react-navigation/native';
 import {checkLogin} from './Utils/AsyncStorage';
 import {RootStackParamList} from './Utils/Interfaces';
+import {useDispatch} from 'react-redux';
 
 const styles = StyleSheet.create({
   button: {
@@ -90,7 +91,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
-
+  const dispatch = useDispatch();
   return (
     <View style={styles.pageContainer}>
       <ImageBackground
@@ -127,7 +128,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                checkLogin(email, password, navigation);
+                checkLogin(email, password, navigation, dispatch);
               }}>
               <Text style={styles.buttonText}>Connect</Text>
             </TouchableOpacity>

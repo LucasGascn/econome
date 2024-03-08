@@ -26,6 +26,7 @@ const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 const CryptoBuyModal: React.FunctionComponent<CryptoBuyModalProps> = props => {
   const {uuid, price, buying, symbol, visible, setVisible} = props;
   const walletCash = useSelector((state: RootState) => state.crypto.money);
+  const user = useSelector((state: RootState) => state.account.loggedInUser);
   const wallet = useSelector((state: RootState) => state.crypto.cryptoWallet);
   const crypto = wallet[uuid] || null;
 
@@ -52,6 +53,9 @@ const CryptoBuyModal: React.FunctionComponent<CryptoBuyModalProps> = props => {
   }, [visible]);
 
   const handleBuy = () => {
+    if (!user.email) {
+      return;
+    }
     if (buying) {
       if (walletCash >= parseFloat(input)) {
         dispatch(
@@ -60,6 +64,7 @@ const CryptoBuyModal: React.FunctionComponent<CryptoBuyModalProps> = props => {
             symbol: symbol,
             amount: output,
             usd: -parseFloat(input),
+            email: user.email,
           }),
         );
       } else {
@@ -73,6 +78,7 @@ const CryptoBuyModal: React.FunctionComponent<CryptoBuyModalProps> = props => {
             symbol: symbol,
             amount: -parseFloat(input),
             usd: output,
+            email: user.email,
           }),
         );
       }
