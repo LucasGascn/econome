@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import CryptoDetail from './src/CryptoDetail';
+import CryptoDetail from './src/Components/Crypto/CryptoDetail';
 import Home from './src/Home';
 import {Icon} from '@rneui/base';
 
@@ -14,8 +14,8 @@ export type RootStackParamList = {
   CryptoDetail: {id: string};
 };
 
-import { Provider } from 'react-redux';
-import {store} from './src/stores/store.tsx'
+import {Provider} from 'react-redux';
+import {store} from './src/Stores/Store';
 
 export default function App(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
@@ -33,28 +33,26 @@ export default function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-              <Provider store={store}>
-
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {backgroundColor: '#1B0B49', borderColor: '#1B0B49'},
-        }}>
-        <Tab.Screen
-          name="MainStack"
-          component={MainStack}
-          options={{
-            tabBarIcon: () => {
-              return <Icon name={'home'} color={'#EBE7F5'} />;
-            },
-            tabBarLabel: () => {
-              return null;
-            },
-          }}
-        />
-      </Tab.Navigator>
-              </Provider>
-
+      <Provider store={store}>
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {backgroundColor: '#1B0B49', borderColor: '#1B0B49'},
+          }}>
+          <Tab.Screen
+            name="MainStack"
+            component={MainStack}
+            options={{
+              tabBarIcon: () => {
+                return <Icon name={'home'} color={'#EBE7F5'} />;
+              },
+              tabBarLabel: () => {
+                return null;
+              },
+            }}
+          />
+        </Tab.Navigator>
+      </Provider>
     </NavigationContainer>
   );
 }

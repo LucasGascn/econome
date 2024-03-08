@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {CryptoType} from './Interfaces';
+import {CryptoType} from '../../Utils/Interfaces';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../App';
+import {RootStackParamList} from '../../../App';
 import {Image} from 'react-native';
 
 const styles = StyleSheet.create({

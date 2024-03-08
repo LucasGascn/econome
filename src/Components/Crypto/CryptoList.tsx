@@ -2,10 +2,10 @@
 import axios from 'axios';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {url} from './api/helper';
+import {url} from '../../Utils/helper';
 import CryptoListItem from './CryptoListItem';
-import {CryptoType} from './Interfaces';
-import SearchBar from './Components/SearchBar';
+import {CryptoType} from '../../Utils/Interfaces';
+import SearchBar from '../SearchBar';
 
 const styles = StyleSheet.create({
   pageContainer: {

@@ -17,11 +17,11 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../App';
-import {CryptoDetailType} from './Interfaces';
-import {url} from './api/helper';
+import {RootStackParamList} from '../../../App';
+import {CryptoDetailType} from '../../Utils/Interfaces';
+import {url} from '../../Utils/helper';
 import axios from 'axios';
-import PageContainer from './Layout/PageContainer';
+import PageContainer from '../../Layout/PageContainer';
 import {SvgUri} from 'react-native-svg';
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
@@ -57,7 +57,6 @@ const CryptoDetail = (
       subscription.unsubscribe(); // Unsubscribe from accelerometer data when component unmounts
     };
   }, []);
-
 
   const getCryptoDetail = useCallback(() => {
     const requestUrl = url('coin/' + id);

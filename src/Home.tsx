@@ -1,8 +1,8 @@
 import React from 'react';
-import CryptoList from './CryptoList';
+import CryptoList from './Components/Crypto/CryptoList';
 import PageContainer from './Layout/PageContainer';
 import {View} from 'react-native';
-import Wallet from './Wallet';
+import Wallet from './Components/WalletAnimation';
 
 const Home = (): React.JSX.Element => {
   return (

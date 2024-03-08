@@ -39,3 +39,9 @@ export type CryptoDetailType = {
     max: string;
   };
 };
+export type AccountDetail = {
+  nom: string;
+  prenom: string;
+  email: string;
+  password: string;
+};

@@ -1,9 +1,5 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
-import {Icon} from '@rneui/themed'; // Assuming this is the correct import for the Icon component
-import {useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../App';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -34,28 +30,13 @@ const PageContainer = ({
 }: {
   child: React.ReactNode;
 }): React.ReactElement => {
-  // const navigation = useNavigation<DrawerNavigationProp<RootStackParamList>>();
-
   return (
     <View style={styles.pageContainer}>
       <ImageBackground
-        source={require('../assets/wallpaper.jpeg')}
+        source={require('../Assets/wallpaper.jpeg')}
         resizeMode="cover"
         style={styles.image}>
-        <View style={styles.pageContainer}>
-          {/* <View style={styles.header}>
-            <Icon
-              style={styles.icon}
-              name={'menu'}
-              color={'white'}
-              size={40}
-              onPress={() => {
-                navigation.openDrawer();
-              }}
-            />
-          </View> */}
-          {child}
-        </View>
+        <View style={styles.pageContainer}>{child}</View>
       </ImageBackground>
     </View>
   );

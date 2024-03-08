@@ -72,7 +72,7 @@ const Wallet =
       <View style={styles.container}>
         <Animated.View style={[styles.cardContainer, rStyle]}>
           <ImageBackground
-            source={require('./assets/wallpaper.jpeg')}
+            source={require('../Assets/wallpaper.jpeg')}
             resizeMode="cover"
             style={styles.imageBackground}
             blurRadius={40}>
