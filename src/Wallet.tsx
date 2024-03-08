@@ -8,7 +8,6 @@ import CryptoListItem from './Components/Crypto/CryptoListItem';
 import {CryptoType, RootStackParamList} from './Utils/Interfaces';
 import {Icon, Switch} from '@rneui/themed';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from './Utils/Interfaces';
 
 const Wallet = (): React.JSX.Element => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

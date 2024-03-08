@@ -6,6 +6,7 @@ import {RootStackParamList} from '../Utils/Interfaces';
 import {Icon} from '@rneui/base';
 import Wallet from '../Wallet';
 import Home from '../Home';
+import ReadMePage from '../ReadMePage';
 
 export default function MainTab(): React.JSX.Element {
   const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -33,6 +34,19 @@ export default function MainTab(): React.JSX.Element {
         options={{
           tabBarIcon: () => {
             return <Icon name={'wallet'} color={'#EBE7F5'} />;
+          },
+          tabBarLabel: () => {
+            return null;
+          },
+        }}
+      />
+
+      <Tab.Screen
+        name="ReadMe"
+        component={ReadMePage}
+        options={{
+          tabBarIcon: () => {
+            return <Icon name={'book'} color={'#EBE7F5'} />;
           },
           tabBarLabel: () => {
             return null;
