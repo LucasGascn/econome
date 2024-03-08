@@ -23,8 +23,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../../App';
-import {CryptoDetailType} from '../../Utils/Interfaces';
+import {CryptoDetailType, RootStackParamList} from '../../Utils/Interfaces';
 import {url} from '../../Utils/Helper';
 import axios from 'axios';
 import PageContainer from '../../Layout/PageContainer';
@@ -92,7 +91,7 @@ const CryptoDetail = (
     return {
       transform: [
         {
-          perspective: 6000,
+          perspective: 1500,
         },
         {rotateX: rotateXvalue},
         {rotateY: rotateYvalue},

@@ -9,15 +9,18 @@ import Wallet from './src/Wallet';
 import {RootStackParamList} from './src/Utils/Interfaces';
 import MainStack from './src/Navigation/MainStack';
 import {getConnected} from './src/Utils/AsyncStorage';
+import {useState} from 'react';
 
 export default function App(): React.JSX.Element {
   const Tab = createBottomTabNavigator<RootStackParamList>();
 
-  let isLoggedIn = false;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   getConnected().then(res => {
-    isLoggedIn = res === 'true';
+    setIsLoggedIn(res === 'true');
+    console.log('isLoggedIn : ' + isLoggedIn);
   });
+
   return (
     <NavigationContainer>
       <Provider store={store}>

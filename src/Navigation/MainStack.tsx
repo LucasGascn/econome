@@ -6,20 +6,39 @@ import CryptoDetail from '../Components/Crypto/CryptoDetail';
 import Wallet from '../Wallet';
 import Login from '../Login';
 import SignUp from '../SignUp';
+import {getConnected} from '../Utils/AsyncStorage';
+import {useState} from 'react';
 
 export default function MainStack(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
 
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
-      <Stack.Screen name="Wallet" component={Wallet} />
-    </Stack.Navigator>
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  getConnected().then(res => {
+    setIsLoggedIn(res === 'true');
+    console.log('isLoggedIn : ' + isLoggedIn);
+  });
+
+  if (isLoggedIn) {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="CryptoDetail" component={CryptoDetail} />
+        <Stack.Screen name="Wallet" component={Wallet} />
+      </Stack.Navigator>
+    );
+  } else {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={Login} />
+      </Stack.Navigator>
+    );
+  }
 }

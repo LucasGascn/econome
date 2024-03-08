@@ -94,7 +94,9 @@ const Wallet =
     }, [walletCrypto, cryptos, walletCash]);
 
     const percentageIncrease = useMemo(() => {
-      return roundNumber(calculatePercentageIncrease(100, totalAmount));
+      return roundNumber(
+        calculatePercentageIncrease(100, parseFloat(totalAmount)),
+      );
     }, [totalAmount]);
 
     return (
@@ -111,7 +113,9 @@ const Wallet =
               <Text
                 style={[
                   styles.balanceUpdate,
-                  percentageIncrease > 0 ? styles.positive : styles.negative,
+                  parseFloat(percentageIncrease) > 0
+                    ? styles.positive
+                    : styles.negative,
                 ]}>
                 {percentageIncrease}%
               </Text>

@@ -14,6 +14,9 @@ export function url(request: string, key = true) {
 }
 
 export function roundNumber(num: number) {
+  if (num === 0) {
+    return '0';
+  }
   let roundedNum;
 
   if (Math.abs(num) < 0.001) {
