@@ -12,3 +12,21 @@ export function url(request, key = true) {
     return `https://api.coinranking.com/v2/${request}`;
   }
 }
+
+export function roundNumber(num) {
+  let roundedNum;
+
+  if (Math.abs(num) < 0.001) {
+    roundedNum = num.toExponential(2);
+  } else {
+    roundedNum = (Math.round(num * 100) / 100).toFixed(2);
+  }
+
+  return roundedNum;
+}
+
+export function calculatePercentageIncrease(oldValue, newValue) {
+  let percentageIncrease = ((newValue - oldValue) / oldValue) * 100;
+
+  return percentageIncrease;
+}

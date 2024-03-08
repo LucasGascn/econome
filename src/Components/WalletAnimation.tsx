@@ -23,6 +23,7 @@ import {
 } from 'react-native-sensors';
 import {useSelector} from 'react-redux';
 import {RootState} from '../Stores/Store';
+import {calculatePercentageIncrease, roundNumber} from '../Utils/helper';
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 const HEIGHT = SCREEN_HEIGHT * 0.2;
@@ -91,23 +92,6 @@ const Wallet =
 
       return roundNumber(amountCalc);
     }, [walletCrypto, cryptos, walletCash]);
-
-    function calculatePercentageIncrease(oldValue: number, newValue: number) {
-      let percentageIncrease = ((newValue - oldValue) / oldValue) * 100;
-
-      return percentageIncrease;
-    }
-    function roundNumber(num: number): number {
-      let roundedNum;
-
-      if (Math.abs(num) < 0.001) {
-        roundedNum = num.toExponential(2);
-      } else {
-        roundedNum = (Math.round(num * 100) / 100).toFixed(2);
-      }
-
-      return parseFloat(roundedNum);
-    }
 
     const percentageIncrease = useMemo(() => {
       return roundNumber(calculatePercentageIncrease(100, totalAmount));
