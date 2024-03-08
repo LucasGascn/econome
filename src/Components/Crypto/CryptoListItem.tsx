@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {CryptoType} from '../../Utils/Interfaces';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../../App';
 import {Image} from 'react-native';
 
@@ -46,10 +46,17 @@ const styles = StyleSheet.create({
   text: {fontSize: 25, color: 'white'},
 });
 
-const CryptoListItem = (props: {item: CryptoType}): React.JSX.Element => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {item} = props;
+interface CryptoListItemProps {
+  item: CryptoType;
+  navigation: NavigationProp<RootStackParamList>;
+  amount?: boolean;
+}
 
+const CryptoListItem: React.FC<CryptoListItemProps> = ({
+  item,
+  navigation,
+  amount,
+}) => {
   const price = parseFloat(item.price);
   let roundedPrice;
 
@@ -75,7 +82,10 @@ const CryptoListItem = (props: {item: CryptoType}): React.JSX.Element => {
         <Text style={styles.text}>{item.name}</Text>
       </View>
       <View>
-        <Text style={styles.price}>{roundedPrice} $</Text>
+        <Text style={styles.price}>
+          {roundedPrice}
+          {!amount && '$'}{' '}
+        </Text>
         <Text
           style={[
             parseFloat(item.change) < 0

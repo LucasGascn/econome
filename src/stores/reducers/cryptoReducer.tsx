@@ -1,32 +1,58 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Crypto, CryptoDetail} from '../../Utils/Interfaces.js';
-import {url} from '../../Utils/helper.js';
+import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from '../../Utils/helper';
+import {CryptoType} from '../../Utils/Interfaces';
 
-type InitialState = {
-    cryptosList: Crypto[],
-    boughtCryptos: CryptoDetail[]
+interface CryptoWallet {
+  [uuid: string]: {
+    amount: number;
+    symbol: string;
+  };
 }
 
-const initialState: InitialState = {
-    cryptosList: [],
-    boughtCryptos: []
+interface CryptoState {
+  cryptoList: CryptoType[];
+  cryptoWallet: CryptoWallet;
+  money: number;
 }
+
+const initialState: CryptoState = {
+  cryptoList: [],
+  cryptoWallet: {},
+  money: 100,
+};
+
+export const getCryptos = createAsyncThunk('account/getCryptos', async () => {
+  const response = await axios.get(url('coins'));
+  return response.data.data.coins;
+});
 
 const slice = createSlice({
-    name: 'cryptos',
-    initialState,
-    reducers: {
-        setCryptosList: (state, action) => {
-            state.cryptosList = action.payload;
-        },
-        addBoughtCrypto: (state, action) => {
-            state.boughtCryptos = [...state.boughtCryptos, action.payload]
-        },
-        sellBoughtCrypto: (state, action) => {
-            state.boughtCryptos = state.boughtCryptos.filter((crypto: CryptoDetail) => crypto.id !== action.payload);
-        }
+  name: 'account',
+  initialState,
+  reducers: {
+    buyOrSellCrypto: (
+      state,
+      action: PayloadAction<{
+        uuid: string;
+        symbol: string;
+        amount: number;
+        usd: number;
+      }>,
+    ) => {
+      const {uuid, symbol, amount, usd} = action.payload;
+      state.money += usd;
+      if (state.cryptoWallet[uuid]) {
+        state.cryptoWallet[uuid].amount += amount;
+      } else {
+        state.cryptoWallet[uuid] = {symbol: symbol, amount: amount};
+      }
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(getCryptos.fulfilled, (state, action) => {
+      state.cryptoList = action.payload;
+    });
   },
 });
 

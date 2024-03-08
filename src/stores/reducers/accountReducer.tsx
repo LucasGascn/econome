@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {AccountDetail} from '../../Utils/Interfaces.js';
 
 const slice = createSlice({
   name: 'account',
@@ -10,17 +9,10 @@ const slice = createSlice({
       email: '',
       password: '',
     },
-    wallet: 100,
   },
   reducers: {
     setAccountData: (state, action) => {
       state.loggedInUser = action.payload;
-    },
-    reduceWalletAmount: (state, action) => {
-      state.wallet -= action.payload;
-    },
-    increaseWalletAmount: (state, action) => {
-      state.wallet += action.payload;
     },
   },
 });

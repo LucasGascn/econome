@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {Icon} from '@rneui/themed';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -21,6 +21,9 @@ import {
   accelerometer,
   setUpdateIntervalForType,
 } from 'react-native-sensors';
+import {useSelector} from 'react-redux';
+import {RootState} from '../Stores/Store';
+import {calculatePercentageIncrease, roundNumber} from '../Utils/helper';
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 const HEIGHT = SCREEN_HEIGHT * 0.2;
@@ -67,6 +70,32 @@ const Wallet =
         ],
       };
     }, []);
+    const cryptos = useSelector((state: RootState) => state.crypto.cryptoList);
+    const walletCrypto = useSelector(
+      (state: RootState) => state.crypto.cryptoWallet,
+    );
+    const walletCash = useSelector((state: RootState) => state.crypto.money);
+
+    const totalAmount = useMemo(() => {
+      let amountCalc = 0;
+
+      if (cryptos.length > 0 && Object.keys(walletCrypto).length > 0) {
+        Object.keys(walletCrypto).forEach(cryptoId => {
+          const cryptoData = cryptos.find(crypto => crypto.uuid === cryptoId);
+          const cryptoDetail = walletCrypto[cryptoId];
+          amountCalc +=
+            cryptoDetail.amount * parseFloat(cryptoData?.price || '0');
+        });
+      }
+
+      amountCalc += walletCash;
+
+      return roundNumber(amountCalc);
+    }, [walletCrypto, cryptos, walletCash]);
+
+    const percentageIncrease = useMemo(() => {
+      return roundNumber(calculatePercentageIncrease(100, totalAmount));
+    }, [totalAmount]);
 
     return (
       <View style={styles.container}>
@@ -78,8 +107,14 @@ const Wallet =
             blurRadius={40}>
             <Text style={styles.balanceText}>Balance</Text>
             <View style={styles.balanceContainer}>
-              <Text style={styles.balance}>$ 55,202.29</Text>
-              <Text style={[styles.balanceUpdate, styles.positive]}>+ 32%</Text>
+              <Text style={styles.balance}>$ {totalAmount}</Text>
+              <Text
+                style={[
+                  styles.balanceUpdate,
+                  percentageIncrease > 0 ? styles.positive : styles.negative,
+                ]}>
+                {percentageIncrease}%
+              </Text>
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -89,7 +124,7 @@ const Wallet =
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Recevoir</Text>
-                <Icon name={'call-received'} color={'#CDB3D4'} />
+                <Icon name={'call-received'} color={'#CDB3D4'} size={20} />
               </TouchableOpacity>
             </View>
           </ImageBackground>
@@ -111,6 +146,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: 'rgba(35, 14, 60, 0.4)',
     padding: 10,
+    alignItems: 'center',
   },
 
   buttonText: {paddingRight: 5},

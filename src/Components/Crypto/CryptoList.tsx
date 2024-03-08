@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {url} from '../../Utils/helper';
 import CryptoListItem from './CryptoListItem';
 import {CryptoType} from '../../Utils/Interfaces';
 import SearchBar from '../SearchBar';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCryptos} from '../../Stores/reducers/CryptoReducer';
+import {StoreDispatch, RootState} from '../../Stores/Store';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../App';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -20,28 +23,26 @@ const styles = StyleSheet.create({
 });
 
 const CryptoList = (): React.JSX.Element => {
-  const [cryptos, setCryptos] = useState<CryptoType[]>([]);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const dispatch = useDispatch<StoreDispatch>();
+
+  useEffect(() => {
+    dispatch(getCryptos());
+
+    const intervalId = setInterval(() => {
+      dispatch(getCryptos());
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const [search, setSearch] = useState('');
+  const cryptos = useSelector((state: RootState) => state.crypto.cryptoList);
 
   const searchedCryptos = useMemo<CryptoType[]>(() => {
     return cryptos.filter(crypto => crypto.name.includes(search));
   }, [cryptos, search]);
-
-  const getCryptos = useCallback(() => {
-    axios
-      .get(url('coins'))
-      .then(function (response) {
-        setCryptos(response.data.data.coins);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    getCryptos();
-  }, []);
 
   return (
     <View style={styles.pageContainer}>
@@ -53,7 +54,7 @@ const CryptoList = (): React.JSX.Element => {
       <FlatList
         data={searchedCryptos}
         renderItem={({item}) => {
-          return <CryptoListItem item={item} />;
+          return <CryptoListItem item={item} navigation={navigation} />;
         }}
       />
     </View>
