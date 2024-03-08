@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler';
+  SensorTypes,
+  accelerometer,
+  setUpdateIntervalForType,
+} from 'react-native-sensors';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
+
 import Animated, {
   Extrapolate,
   interpolate,
@@ -34,6 +35,28 @@ const CryptoDetail = (
   props: NativeStackScreenProps<RootStackParamList, 'CryptoDetail'>,
 ): React.JSX.Element => {
   const [cryptoDetail, setCryptoDetail] = useState<CryptoDetailType>();
+  const {id}: {id: string} = props.route.params;
+
+  const rotateX = useSharedValue(0);
+  const rotateY = useSharedValue(0);
+
+  setUpdateIntervalForType(SensorTypes.accelerometer, 400);
+
+  useEffect(() => {
+    const subscription = accelerometer.subscribe(({x, y}) => {
+      // Adjust the interpolation ranges to balance the tilt response
+      rotateX.value = withTiming(
+        interpolate(x, [-1, 1], [7.5, -7.5], Extrapolate.CLAMP),
+      );
+      rotateY.value = withTiming(
+        interpolate(y, [-1, 1], [-7.5, 7.5], Extrapolate.CLAMP),
+      );
+    });
+
+    return () => {
+      subscription.unsubscribe(); // Unsubscribe from accelerometer data when component unmounts
+    };
+  }, []);
 
   const getCryptoDetail = useCallback(() => {
     const requestUrl = url('coin/' + id);
@@ -51,51 +74,14 @@ const CryptoDetail = (
     getCryptoDetail();
   }, []);
 
-  const {id}: {id: string} = props.route.params;
-  const rotateX = useSharedValue(0);
-  const rotateY = useSharedValue(0);
-
-  const gesture = Gesture.Pan()
-    .onBegin(event => {
-      rotateX.value = withTiming(
-        interpolate(event.y, [0, CARD_HEIGHT], [10, -10], Extrapolate.CLAMP),
-      );
-      rotateY.value = withTiming(
-        interpolate(event.x, [0, CARD_WIDTH], [-10, 10], Extrapolate.CLAMP),
-      );
-    })
-    .onUpdate(event => {
-      // topLeft (10deg, -10deg)
-      // topRight (10deg, 10deg)
-      // bottomRight (-10deg, 10deg)
-      // bottomLeft (-10deg, -10deg)
-
-      rotateX.value = interpolate(
-        event.y,
-        [0, CARD_HEIGHT],
-        [10, -10],
-        Extrapolate.CLAMP,
-      );
-      rotateY.value = interpolate(
-        event.x,
-        [0, CARD_WIDTH],
-        [-10, 10],
-        Extrapolate.CLAMP,
-      );
-    })
-    .onFinalize(() => {
-      rotateX.value = withTiming(0);
-      rotateY.value = withTiming(0);
-    });
-
   const rStyle = useAnimatedStyle(() => {
-    const rotateXvalue = `${rotateX.value}deg`;
-    const rotateYvalue = `${rotateY.value}deg`;
+    const rotateXvalue = `${rotateX.value * 1.2}deg`;
+    const rotateYvalue = `${rotateY.value * 1.2}deg`;
 
     return {
       transform: [
         {
-          perspective: 300,
+          perspective: 6000,
         },
         {rotateX: rotateXvalue},
         {rotateY: rotateYvalue},
@@ -121,77 +107,70 @@ const CryptoDetail = (
   return (
     <PageContainer
       child={
-        <GestureHandlerRootView style={{flex: 1}}>
-          <View style={styles.container}>
-            <GestureDetector gesture={gesture}>
-              <Animated.View
-                style={[
-                  {
-                    height: CARD_HEIGHT,
-                    width: CARD_WIDTH,
-                    backgroundColor: '#800080' + '4D',
-                    borderColor: '#8000801A',
-                    borderWidth: 1,
-                    position: 'absolute',
-                    borderRadius: 20,
-                    zIndex: 300,
-                  },
-                  rStyle,
-                ]}>
-                <View style={styles.cryptoContainer}>
-                  <View style={styles.cryptoContainerTitle}>
-                    <Text style={styles.text}>{cryptoDetail?.name}</Text>
-                    <Text style={styles.rank}>Ranked {cryptoDetail?.rank}</Text>
-                  </View>
-                  <View style={styles.descContainer}>
-                    <Text style={styles.desc}>{cryptoDetail?.description}</Text>
-                    <View style={styles.desc}>
-                      <Text style={styles.textWhite}>Recent change :</Text>
-                      <Text
-                        style={[
-                          parseFloat(cryptoDetail?.change || '0') < 0
-                            ? styles.negative
-                            : styles.positive,
-                        ]}>
-                        {roundPrice(cryptoDetail?.change || '')} $
-                      </Text>
-                      <Text style={styles.textWhite}>
-                        {'\n'}
-                        Current price : {roundPrice(
-                          cryptoDetail?.price || '',
-                        )}{' '}
-                        $
-                      </Text>
-                      <Text style={styles.textWhite}>
-                        {'\n'}
-                        Highest price :{' '}
-                        {roundPrice(cryptoDetail?.allTimeHigh.price || '')} $
-                      </Text>
-                    </View>
-                  </View>
-
-                  <Text style={styles.textBottom}>
-                    Circulating : {cryptoDetail?.supply.circulating}
-                    {'\n'}
-                    {'\n'}
-                    Total : {cryptoDetail?.supply.total}
-                    {'\n'}
-                    {'\n'}
-                    Market Number : {cryptoDetail?.numberOfMarkets}
-                    {'\n'}
-                    {'\n'} Exchange Number : {cryptoDetail?.numberOfExchanges}
+        <View style={styles.container}>
+          <Animated.View
+            style={[
+              {
+                height: CARD_HEIGHT,
+                width: CARD_WIDTH,
+                backgroundColor: '#800080' + '4D',
+                borderColor: '#8000801A',
+                borderWidth: 1,
+                position: 'absolute',
+                borderRadius: 20,
+                zIndex: 300,
+              },
+              rStyle,
+            ]}>
+            <View style={styles.cryptoContainer}>
+              <View style={styles.cryptoContainerTitle}>
+                <Text style={styles.text}>{cryptoDetail?.name}</Text>
+                <Text style={styles.rank}>Ranked {cryptoDetail?.rank}</Text>
+              </View>
+              <View style={styles.descContainer}>
+                <Text style={styles.desc}>{cryptoDetail?.description}</Text>
+                <View style={styles.desc}>
+                  <Text style={styles.textWhite}>Recent change :</Text>
+                  <Text
+                    style={[
+                      parseFloat(cryptoDetail?.change || '0') < 0
+                        ? styles.negative
+                        : styles.positive,
+                    ]}>
+                    {roundPrice(cryptoDetail?.change || '')} $
                   </Text>
-
-                  <SvgUri
-                    style={styles.image}
-                    height={'50%'}
-                    uri={cryptoDetail?.iconUrl || null}
-                  />
+                  <Text style={styles.textWhite}>
+                    {'\n'}
+                    Current price : {roundPrice(cryptoDetail?.price || '')} $
+                  </Text>
+                  <Text style={styles.textWhite}>
+                    {'\n'}
+                    Highest price :{' '}
+                    {roundPrice(cryptoDetail?.allTimeHigh.price || '')} $
+                  </Text>
                 </View>
-              </Animated.View>
-            </GestureDetector>
-          </View>
-        </GestureHandlerRootView>
+              </View>
+
+              <Text style={styles.textBottom}>
+                Circulating : {cryptoDetail?.supply.circulating}
+                {'\n'}
+                {'\n'}
+                Total : {cryptoDetail?.supply.total}
+                {'\n'}
+                {'\n'}
+                Market Number : {cryptoDetail?.numberOfMarkets}
+                {'\n'}
+                {'\n'} Exchange Number : {cryptoDetail?.numberOfExchanges}
+              </Text>
+
+              <SvgUri
+                style={styles.image}
+                height={'50%'}
+                uri={cryptoDetail?.iconUrl || null}
+              />
+            </View>
+          </Animated.View>
+        </View>
       }
     />
   );
