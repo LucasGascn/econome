@@ -6,7 +6,13 @@ import {
   accelerometer,
   setUpdateIntervalForType,
 } from 'react-native-sensors';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Animated, {
   Extrapolate,
@@ -23,9 +29,11 @@ import {url} from '../../Utils/helper';
 import axios from 'axios';
 import PageContainer from '../../Layout/PageContainer';
 import {SvgUri} from 'react-native-svg';
+import {Icon} from '@rneui/themed';
+import CryptoBuyModal from './CryptoBuyModal';
 
-const {width: SCREEN_WIDTH} = Dimensions.get('window');
-const HEIGHT = 256 * 2;
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
+const HEIGHT = SCREEN_HEIGHT * 0.7;
 const WIDTH = SCREEN_WIDTH * 0.9;
 
 const CARD_HEIGHT = HEIGHT - 5;
@@ -35,10 +43,13 @@ const CryptoDetail = (
   props: NativeStackScreenProps<RootStackParamList, 'CryptoDetail'>,
 ): React.JSX.Element => {
   const [cryptoDetail, setCryptoDetail] = useState<CryptoDetailType>();
+  const [buying, setBuying] = useState(false);
+
   const {id}: {id: string} = props.route.params;
 
   const rotateX = useSharedValue(0);
   const rotateY = useSharedValue(0);
+  const [visible, setVisible] = useState(false);
 
   setUpdateIntervalForType(SensorTypes.accelerometer, 400);
 
@@ -102,7 +113,9 @@ const CryptoDetail = (
     return roundedPrice;
   }
 
-  console.log(cryptoDetail?.supply);
+  if (!cryptoDetail) {
+    return <></>;
+  }
 
   return (
     <PageContainer
@@ -124,52 +137,81 @@ const CryptoDetail = (
             ]}>
             <View style={styles.cryptoContainer}>
               <View style={styles.cryptoContainerTitle}>
-                <Text style={styles.text}>{cryptoDetail?.name}</Text>
-                <Text style={styles.rank}>Ranked {cryptoDetail?.rank}</Text>
+                <Text style={styles.text}>{cryptoDetail.name}</Text>
+                <Text style={styles.rank}>Ranked {cryptoDetail.rank}</Text>
               </View>
               <View style={styles.descContainer}>
-                <Text style={styles.desc}>{cryptoDetail?.description}</Text>
+                <Text style={styles.desc}>{cryptoDetail.description}</Text>
                 <View style={styles.desc}>
                   <Text style={styles.textWhite}>Recent change :</Text>
                   <Text
                     style={[
-                      parseFloat(cryptoDetail?.change || '0') < 0
+                      parseFloat(cryptoDetail.change || '0') < 0
                         ? styles.negative
                         : styles.positive,
                     ]}>
-                    {roundPrice(cryptoDetail?.change || '')} $
+                    {roundPrice(cryptoDetail.change || '')} $
                   </Text>
                   <Text style={styles.textWhite}>
                     {'\n'}
-                    Current price : {roundPrice(cryptoDetail?.price || '')} $
+                    Current price : {roundPrice(cryptoDetail.price || '')} $
                   </Text>
                   <Text style={styles.textWhite}>
                     {'\n'}
                     Highest price :{' '}
-                    {roundPrice(cryptoDetail?.allTimeHigh.price || '')} $
+                    {roundPrice(cryptoDetail.allTimeHigh.price || '')} $
                   </Text>
                 </View>
               </View>
 
               <Text style={styles.textBottom}>
-                Circulating : {cryptoDetail?.supply.circulating}
+                Circulating : {cryptoDetail.supply.circulating}
                 {'\n'}
                 {'\n'}
-                Total : {cryptoDetail?.supply.total}
+                Total : {cryptoDetail.supply.total}
                 {'\n'}
                 {'\n'}
-                Market Number : {cryptoDetail?.numberOfMarkets}
+                Market Number : {cryptoDetail.numberOfMarkets}
                 {'\n'}
-                {'\n'} Exchange Number : {cryptoDetail?.numberOfExchanges}
+                {'\n'} Exchange Number : {cryptoDetail.numberOfExchanges}
               </Text>
 
               <SvgUri
                 style={styles.image}
                 height={'50%'}
-                uri={cryptoDetail?.iconUrl || null}
+                uri={cryptoDetail.iconUrl || null}
               />
+
+              <View style={styles.buttonsContainer}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buyButton]}
+                  onPress={() => {
+                    setBuying(true);
+                    setVisible(true);
+                  }}>
+                  <Text style={styles.buttonText}>Acheter</Text>
+                  <Icon name={'shopping-cart'} color={'#CDB3D4'} size={20} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.sellButton]}
+                  onPress={() => {
+                    setBuying(false);
+                    setVisible(true);
+                  }}>
+                  <Text style={styles.buttonText}>Vendre</Text>
+                  <Icon name={'sell'} color={'#CDB3D4'} size={20} />
+                </TouchableOpacity>
+              </View>
             </View>
           </Animated.View>
+          <CryptoBuyModal
+            buying={buying}
+            visible={visible}
+            setVisible={setVisible}
+            symbol={cryptoDetail.symbol}
+            price={parseFloat(cryptoDetail.price)}
+            uuid={cryptoDetail.uuid}
+          />
         </View>
       }
     />
@@ -177,6 +219,24 @@ const CryptoDetail = (
 };
 
 const styles = StyleSheet.create({
+  buttonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginTop: 20,
+  },
+  button: {
+    flexDirection: 'row',
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+  },
+  buyButton: {backgroundColor: 'rgba(0, 255, 0, 0.5)'},
+  sellButton: {backgroundColor: 'rgba(255, 0, 0, 0.5)'},
+
+  buttonText: {paddingRight: 5},
+
   cryptoContainer: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -216,7 +276,7 @@ const styles = StyleSheet.create({
   },
 
   textBottom: {
-    marginTop: 30,
+    marginTop: 20,
     padding: 10,
     width: '90%',
     backgroundColor: '#8000804D',

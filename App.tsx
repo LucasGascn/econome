@@ -6,17 +6,18 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import CryptoDetail from './src/Components/Crypto/CryptoDetail';
 import Home from './src/Home';
-import Wallet from './src/Wallet'
 import {Icon} from '@rneui/base';
 
 export type RootStackParamList = {
   MainStack: undefined;
   Home: undefined;
+  Wallet: undefined;
   CryptoDetail: {id: string};
 };
 
 import {Provider} from 'react-redux';
-import {store} from './src/Stores/Store';
+import store from './src/Stores/Store';
+import Wallet from './src/Wallet';
 
 export default function App(): React.JSX.Element {
   const Stack = createStackNavigator<RootStackParamList>();
@@ -46,6 +47,18 @@ export default function App(): React.JSX.Element {
             options={{
               tabBarIcon: () => {
                 return <Icon name={'home'} color={'#EBE7F5'} />;
+              },
+              tabBarLabel: () => {
+                return null;
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Wallet"
+            component={Wallet}
+            options={{
+              tabBarIcon: () => {
+                return <Icon name={'wallet'} color={'#EBE7F5'} />;
               },
               tabBarLabel: () => {
                 return null;

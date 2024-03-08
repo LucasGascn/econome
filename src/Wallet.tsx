@@ -1,62 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import React, {useState} from 'react';
 //import {SearchBar} from '@rneui/themed';
-import Header from './Header.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import {actions as cryptoActions} from './stores/reducers/cryptoReducer.tsx'
-import { Crypto } from './interfaces.tsx'
-import { SearchBar } from '@rneui/base';
-import axios from 'axios';
-import {url} from './api/helper.js';
+// import {useSelector} from 'react-redux';
+import PageContainer from './Layout/PageContainer';
+// import {RootState} from './Stores/Store';
+import SearchBar from './Components/SearchBar';
+import {StyleSheet, View} from 'react-native';
 
-const Wallet = ({navigation}: any): React.JSX.Element => {
-  const {loggedInUser} = useSelector((s: any) => s.account)
-  const {boughtCryptos} = useSelector((s: any) => s.crypto)
+const Wallet = (): //  {navigation}: any
+React.JSX.Element => {
+  //const wallet = useSelector((state: RootState) => state.crypto.cryptoWallet);
   const [search, setSearch] = useState('');
-
-  const dispatch = useDispatch();
-
-  const searchedCryptosList = useMemo(() => {
-
-      return boughtCryptos.filter((crypto: Crypto) => crypto.name.includes(search))
-  }, [boughtCryptos, search]);
-
   return (
-    <View style={styles.pageContainer}>
-      <Header />
+    <PageContainer
+      child={
+        <View style={styles.pageContainer}>
+          <SearchBar
+            setSearch={setSearch}
+            search={search}
+            tooltip="Rechercher Cryptos"
+          />
 
-      <View style={styles.searchBar}>
-        <SearchBar
-          placeholder="Rechercher cryptos"
-          onChangeText={text => {
-            setSearch(text);
-          }}
-          value={search}
-        />
-      </View>
-      <FlatList
-        data={searchedCryptosList}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              style={styles.tile}
-              onPress={() => {
-                navigation.navigate('CryptoDetail', {id: item.id});
-              }}>
-              {<Text style={styles.text}>{item.name}</Text>}
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
+          {/* <FlatList
+            data={searchedCryptos}
+            renderItem={({item}) => {
+              return <CryptoListItem item={item} />;
+            }}
+          /> */}
+        </View>
+      }
+    />
   );
 };
 
 const styles = StyleSheet.create({
   pageContainer: {
-    backgroundColor: 'white',
     flex: 1,
+    alignItems: 'center',
+    padding: 30,
   },
 
   button: {

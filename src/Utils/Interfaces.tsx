@@ -1,5 +1,3 @@
-import {Int32} from 'react-native/Libraries/Types/CodegenTypes';
-
 export type CryptoType = {
   uuid: string;
   symbol: string;
@@ -8,8 +6,8 @@ export type CryptoType = {
   iconUrl: string;
   price: string;
   change: string;
-  rank: 1;
-  btcPrice: '1';
+  rank: number;
+  btcPrice: string;
 };
 
 export type CryptoDetailType = {
@@ -22,18 +20,18 @@ export type CryptoDetailType = {
   websiteUrl: string;
   price: string;
   btcPrice: string;
-  priceAt: Int32;
+  priceAt: number;
   change: string;
-  rank: Int32;
-  numberOfMarkets: Int32;
-  numberOfExchanges: Int32;
+  rank: number;
+  numberOfMarkets: number;
+  numberOfExchanges: number;
   allTimeHigh: {
     price: string;
-    timestamp: Int32;
+    timestamp: number;
   };
   supply: {
     confirmed: boolean;
-    supplyAt: Int32;
+    supplyAt: number;
     circulating: string;
     total: string;
     max: string;
