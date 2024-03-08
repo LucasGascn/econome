@@ -63,7 +63,7 @@ const Wallet =
       return {
         transform: [
           {
-            perspective: 3000,
+            perspective: 100000,
           },
           {rotateX: rotateXvalue},
           {rotateY: rotateYvalue},
